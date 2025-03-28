@@ -1,9 +1,9 @@
 import express from "express";
 import mysql from "mysql2/promise";
-
+import cors from "cors";
 const app = express();
 const port = process.env.PORT || 8080;
-
+app.use(cors());
 const pool = mysql.createPool({
   host: process.env.DB_HOST || "db",
   user: process.env.DB_USER || "root",
