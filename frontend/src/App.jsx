@@ -8,11 +8,11 @@ function App() {
   useEffect(() => {
     const fetchCalculation = async () => {
       try {
-        const response = await fetch("http://localhost:8080"); // The URL of your backend
+        const response = await fetch("/api");
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
-        const data = await response.text(); // Get the response body as text
+        const data = await response.text();
         setResult(data); // Store the result in state
       } catch (error) {
         console.error("Error fetching data:", error);

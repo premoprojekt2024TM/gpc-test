@@ -16,18 +16,23 @@ COPY . .
 # Build the application
 RUN npm run build
 
-# Production stage
-FROM nginx:alpine
+# Production stage (this just prepares the build artifacts)
+FROM node:lts
 
-# Copy Nginx configuration
-COPY nginx.conf /etc/nginx/nginx.conf
+# Set working directory
+WORKDIR /app
+
+# Copy package.json and package-lock.json
+COPY package*.json ./
+
+# Install only production dependencies
+RUN npm install --only=production
 
 # Copy built assets from build stage
-# Note: Vite builds to 'dist', not 'build'
-COPY --from=build /app/dist /usr/share/nginx/html
+COPY --from=build /app/dist /app/dist
 
-# Expose port 80
-EXPOSE 80
+# Expose the port for the app (we can still expose a port, but it won't be used by Caddy inside the container)
+EXPOSE 3000
 
-# Start Nginx
-CMD ["nginx", "-g", "daemon off;"]
+# Start the application with a basic node command if needed
+CMD ["npm", "run", "start"]

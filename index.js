@@ -29,7 +29,7 @@ async function connectToDatabase() {
 // Initial connection attempt
 connectToDatabase();
 
-app.get("/", async (req, res) => {
+app.get("/api", async (req, res) => {
   try {
     const [rows] = await pool.query("SELECT 1+1 AS result");
     res.send(`Hello World! Simple MySQL calculation result: ${rows[0].result}`);
