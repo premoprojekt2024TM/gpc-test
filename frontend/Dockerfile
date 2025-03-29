@@ -31,8 +31,11 @@ RUN npm install --only=production
 # Copy built assets from build stage
 COPY --from=build /app/dist /app/dist
 
-# Expose the port for the app (we can still expose a port, but it won't be used by Caddy inside the container)
+# Install serve to serve the built assets
+RUN npm install -g serve
+
+# Expose the port (we'll use port 5000 for serving the app)
 EXPOSE 3000
 
-# Start the application with a basic node command if needed
-CMD ["npm", "run", "start"]
+# Start the app using serve to serve the static files from /app/dist
+CMD ["serve", "-s", "dist", "-l", "3000"]
